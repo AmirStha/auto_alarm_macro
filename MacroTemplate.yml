@@ -24,8 +24,4 @@ Resources:
       - AWSLambdaBasicExecutionRole
       Environment:
         Variables:
-          # SNSTopic: !Ref MonitoringTopic
-          SNSTopic: arn:aws:sns:us-east-1:713147272639:monitorBottleLambdaBottleIOT
-
-# aws cloudformation package --template-file MacroTemplate.yaml --s3-bucket test-bucket-acg-rajan --output-template-file packaged-template.yaml
-# aws cloudformation deploy --template-file packaged-template.yaml --capabilities CAPABILITY_IA CAPABILITY_NAMED_IAM CAPABILITY_AUTO_EXPAND --stack-name auto-alarm-test
+          SNSTopic: arn:aws:sns:us-east-1:713147272639:monitorBottleLambdaBottleIOT #Replace it with your own SNSTopic ARN
