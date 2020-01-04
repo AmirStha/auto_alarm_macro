@@ -14,8 +14,8 @@ aws cloudformation package --template-file MacroTemplate.yaml --s3-bucket <YourB
 
 - Now you deploy the CloudFormation Stack using the following command : 
 ```
-aws cloudformation deploy --template-file packaged-template.yaml --capabilities CAPABILITY_IA CAPABILITY_NAMED_IAM CAPABILITY_AUTO_EXPAND --stack-name <CFStackName>
+aws cloudformation deploy --template-file packaged-template.yaml --capabilities CAPABILITY_IAM CAPABILITY_NAMED_IAM CAPABILITY_AUTO_EXPAND --stack-name <CFStackName>
 ```
 
 #### After deployment is succesful : 
-Once the stack is deployed, you can just paste ***Transform: AlarmMacro*** in the ***resource*** section [Not Resource] of your Lambda function and autoAlarm will be created for you.
+Once the stack is deployed, you can just paste ***Transform: AlarmMacro*** in the ***resources*** section [Not Resources] of your Lambda function and Alarms will be created automatically for your Lambda Function.
