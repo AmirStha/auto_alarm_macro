@@ -1,6 +1,3 @@
-# Copyright 2019 Amazon.com, Inc. or its affiliates. All Rights Reserved.
-# SPDX-License-Identifier: Apache-2.0
-
 import os
 import logging
 
@@ -16,12 +13,7 @@ def handler(event, context):
     for resource in resources:
         logger.info('Searching {} for resource type'.format(resource))
         resource_json = resources[resource]
-        try:
-            # if resource_json['Type'] == 'AWS::EC2::Instance':
-            #     logger.info('Resource {} is an EC2'.format(resource))
-            #     ec2_alarms = ec2(resource,monitoring_topic,resource_json)
-            #     alarm_dictionary.update(ec2_alarms)
-            
+        try:             
             
             if resource_json['Type'] == 'AWS::Lambda::Function':
                 logger.info('Resource {} is a lambda function'.format(resource))
@@ -47,22 +39,6 @@ def handler(event, context):
         'fragment': fragment
     }
     return resp
-
-# def ec2(resource,monitoring_topic,resource_json):
-#     ec2_dict = {}
-#     logger.info('Instance Found: {}'.format(resource))
-#     cpu_alarm = generate_alarm(resource,monitoring_topic,{'AlarmName': 'CPUUtilization', 'MetricName': 'CPUUtilization', 'EvaluationPeriods': '5',
-#      'ComparisonOperator': 'GreaterThanOrEqualToThreshold', "Dimensions": [{"Name": 'InstanceId',"Value": {"Ref": f'{resource}'}}],
-#      'Namespace': 'AWS/EC2', 'Period': '120', 'Statistic': 'Average', 'Threshold': '85', 'Unit': 'Percent'},resource_json)
-#     ec2_dict.update(cpu_alarm)
-#     statuscheck_failed_alarm = generate_alarm(resource, monitoring_topic, {'AlarmName':'StatusCheck','MetricName':'StatusCheckFailed_Instance', 'EvaluationPeriods': '5', 'ComparisonOperator': 'GreaterThanOrEqualToThreshold',
-#                                                                            "Dimensions": [{"Name": 'InstanceId',"Value": {"Ref": f'{resource}'}}],
-#                                                                            'Namespace': 'AWS/EC2', 'Period': '120', 'Statistic': 'Average',
-#                                                                            'Threshold': '85', 'Unit': 'Percent'},resource_json)
-#     ec2_dict.update(statuscheck_failed_alarm)
-#     return ec2_dict
-
-
 
 def aws_lambda(resource,monitoring_topic,resource_json):
     lambda_dict = {}
@@ -104,9 +80,7 @@ def generate_alarm(resource,monitoring_topic,alarm,resource_json):
     alarm_template = {f'{resource}{alarm["AlarmName"]}': {
         "Type": "AWS::CloudWatch::Alarm",
         "Properties": {
-            # "ActionsEnabled": "true",
             "AlarmActions": [monitoring_topic],
-            # "InsufficientDataActions": [monitoring_topic],
             "AlarmDescription": {
                 "Fn::Join": [
                     " - ", [
