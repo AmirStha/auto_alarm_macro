@@ -43,29 +43,38 @@ def handler(event, context):
 def aws_lambda(resource,monitoring_topic,resource_json):
     lambda_dict = {}
     lambda_4xx_count = generate_alarm(resource, monitoring_topic,
-                                          {'AlarmName': '4xxErrors', 'MetricName': 'Errors',
+                                          {'AlarmName': '4xxErrors',
+                                           'MetricName': 'Errors',
                                            'EvaluationPeriods': '1',
                                            'ComparisonOperator': 'GreaterThanThreshold',
                                            "Dimensions": [{"Name": 'FunctionName',"Value": {"Ref": f'{resource}'}}],
-                                           'Namespace': 'AWS/Lambda', 'Period': '60',
-                                           'Statistic': 'Sum', 'Threshold': 0, 'Unit': 'Count'},resource_json)
+                                           'Namespace': 'AWS/Lambda', 
+                                           'Period': '60',
+                                           'Statistic': 'Sum', 
+                                           'Threshold': 5, #Change Errors Threshold from here
+                                           'Unit': 'Count'},resource_json)
     lambda_dict.update(lambda_4xx_count)
     lambda_invocations_count = generate_alarm(resource, monitoring_topic,
-                                       {'AlarmName': 'Invocations', 'MetricName': 'Invocations',
+                                       {'AlarmName': 'Invocations',
+                                        'MetricName': 'Invocations',
                                         'EvaluationPeriods': '1',
                                         'ComparisonOperator': 'GreaterThanThreshold',
                                         "Dimensions": [{"Name": 'FunctionName',"Value": {"Ref": f'{resource}'}}],
                                         'Namespace': 'AWS/Lambda', 'Period': '60',
-                                        'Statistic': 'Sum', 'Threshold': 5,
+                                        'Statistic': 'Sum',
+                                        'Threshold': 5, #Change Invocations Threshold from here
                                         'Unit': 'Count'},resource_json)
     lambda_dict.update(lambda_invocations_count)
     lambda_invocations_count = generate_alarm(resource, monitoring_topic,
-                                       {'AlarmName': 'Throttles', 'MetricName': 'Throttles',
+                                       {'AlarmName': 'Throttles',
+                                        'MetricName': 'Throttles',
                                         'EvaluationPeriods': '1',
                                         'ComparisonOperator': 'GreaterThanThreshold',
                                         "Dimensions": [{"Name": 'FunctionName',"Value": {"Ref": f'{resource}'}}],
-                                        'Namespace': 'AWS/Lambda', 'Period': '60',
-                                        'Statistic': 'Sum', 'Threshold': 5,
+                                        'Namespace': 'AWS/Lambda', 
+                                        'Period': '60',
+                                        'Statistic': 'Sum', 
+                                        'Threshold': 5, #Change Throttles Threshold from here
                                         'Unit': 'Count'},resource_json)
     lambda_dict.update(lambda_invocations_count)
     return lambda_dict

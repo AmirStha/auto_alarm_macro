@@ -1,6 +1,7 @@
 # autoAlarm
 CloudFormation Template for deploying CloudFormation Macro which generates &amp; deploys Invocations, Errors &amp; Throttles Alarm for the Lambda functions
-The default Threshold values for Invocations, Errors and Throttles is 5. You can change the values from ***alarm_macro.py***. Also the default SNS Topic is ***monitorBottleLambdaBottleIOT***. You can replace with your own Monitoring Topic ARN from ***MacroTemplate.yaml***
+The default Threshold values for Invocations, Errors and Throttles is 5. You can change the values from ***alarm_macro.py***. Also the default SNS Topic is ***monitorBottleLambdaBottleIOT***. You can replace with your own Monitoring Topic ARN from ***MacroTemplate.yaml***. Instructions are provided as comments in the code.
+
 *** To deploy this stack *** :
 - You need to create an S3 bucket, To create the bucket run the following command :
 ```
