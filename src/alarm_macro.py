@@ -65,7 +65,7 @@ def aws_lambda(resource,monitoring_topic,resource_json):
                                         'Threshold': 5, #Change Invocations Threshold from here
                                         'Unit': 'Count'},resource_json)
     lambda_dict.update(lambda_invocations_count)
-    lambda_invocations_count = generate_alarm(resource, monitoring_topic,
+    lambda_throttles_count = generate_alarm(resource, monitoring_topic,
                                        {'AlarmName': 'Throttles',
                                         'MetricName': 'Throttles',
                                         'EvaluationPeriods': '1',
@@ -76,7 +76,7 @@ def aws_lambda(resource,monitoring_topic,resource_json):
                                         'Statistic': 'Sum', 
                                         'Threshold': 5, #Change Throttles Threshold from here
                                         'Unit': 'Count'},resource_json)
-    lambda_dict.update(lambda_invocations_count)
+    lambda_dict.update(lambda_throttles_count)
     return lambda_dict
 
 
