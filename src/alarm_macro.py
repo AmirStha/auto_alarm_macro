@@ -19,6 +19,12 @@ def handler(event, context):
                 logger.info('Resource {} is a lambda function'.format(resource))
                 lambda_alarms = aws_lambda(resource,monitoring_topic,resource_json)
                 alarm_dictionary.update(lambda_alarms)
+
+            elif resource_json['Type'] == 'AWS::EC2::Instance':
+                logger.info('Resource {} is an EC2'.format(resource))
+                ec2_alarms = ec2(resource,monitoring_topic,resource_json)
+                alarm_dictionary.update(ec2_alarms)
+
             else:
                 logger.info('Resource {} is not of a supported resource type'.format(resource))
         except Exception as e:
@@ -78,6 +84,32 @@ def aws_lambda(resource,monitoring_topic,resource_json):
                                         'Unit': 'Count'},resource_json)
     lambda_dict.update(lambda_throttles_count)
     return lambda_dict
+
+def ec2(resource,monitoring_topic,resource_json):
+    ec2_dict = {}
+    logger.info('Instance Found: {}'.format(resource))
+    cpu_alarm = generate_alarm(resource,monitoring_topic,
+    {'AlarmName': 'CPUUtilization',
+     'MetricName': 'CPUUtilization', 
+     'EvaluationPeriods': '5',
+     'ComparisonOperator': 'GreaterThanOrEqualToThreshold', 
+     "Dimensions": [{"Name": 'InstanceId',"Value": {"Ref": f'{resource}'}}],
+     'Namespace': 'AWS/EC2', 
+     'Period': '120', 
+     'Statistic': 'Average', 
+     'Threshold': '85', 
+     'Unit': 'Percent'},resource_json)
+    ec2_dict.update(cpu_alarm)
+    statuscheck_failed_alarm = generate_alarm(resource, monitoring_topic, 
+    {'AlarmName':'StatusCheck',
+    'MetricName':'StatusCheckFailed_Instance', 
+    'EvaluationPeriods': '5', 
+    'ComparisonOperator': 'GreaterThanOrEqualToThreshold',                                                                       
+    "Dimensions": [{"Name": 'InstanceId',"Value": {"Ref": f'{resource}'}}],
+    'Namespace': 'AWS/EC2', 'Period': '120', 'Statistic': 'Average',
+    'Threshold': '20', 'Unit': 'Percent'},resource_json)
+    ec2_dict.update(statuscheck_failed_alarm)
+    return ec2_dict
 
 
 
