@@ -77,12 +77,17 @@ def handler(event, context):
     monitoring_topic = os.environ['SNSTopic']
     logger.info('Input Template: {}'.format(fragment))
     resources = fragment['Resources']
+
+    logger.info(">>>>>>>>>>> event['params']: {}".format(event['params']))
+
     for resource in resources:
         logger.info('Searching {} for resource type'.format(resource))
         resource_json = resources[resource]
         try:   
-            print("testing")          
             if resource_json['Type'] == 'AWS::Lambda::Function':
+                print(">>>>>>>>>>>>>>>>>> resource_json", resource_json)
+                # if resource_json and resource_json['FunctionName']:
+                #     print(">>>>>>>>>>>>>>>>>> ", resource_json['FunctionName'])
                 print("This is a lambda resource")
                 logger.info('Resource {} is a lambda function'.format(resource))
                 lambda_alarms = aws_alarms(resource,monitoring_topic,resource_json, conf_file['lambda'])
