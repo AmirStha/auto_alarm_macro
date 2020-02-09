@@ -92,10 +92,10 @@ def handler(event, context):
                 logger.info('Resource {} is a lambda function'.format(resource))
                 lambda_alarms = aws_alarms(resource,monitoring_topic,resource_json, conf_file['lambda'])
                 alarm_dictionary.update(lambda_alarms)
-            # elif resource_json['Type'] == 'AWS::EC2::Instance':
-            #     logger.info('Resource {} is an EC2'.format(resource))
-            #     ec2_alarms = aws_alarms(resource,monitoring_topic,resource_json, conf_file['ec2'])
-            #     alarm_dictionary.update(ec2_alarms)
+            elif resource_json['Type'] == 'AWS::EC2::Instance':
+                logger.info('Resource {} is an EC2'.format(resource))
+                ec2_alarms = aws_alarms(resource,monitoring_topic,resource_json, conf_file['ec2'])
+                alarm_dictionary.update(ec2_alarms)
             else:
                 logger.info('Resource {} is not of a supported resource type'.format(resource))
         except Exception as e:
