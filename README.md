@@ -20,6 +20,8 @@ aws cloudformation deploy --template-file packaged-template.yaml --capabilities 
 #### After deployment is succesful : 
 Once the stack is deployed, you can just paste ***Transform: AlarmMacro*** in the ***resources*** section [Not Resources] of your Lambda function and Alarms will be created automatically for your Lambda Function.
 
+Also you have to specify the Name of the lambda functions in *** resources/Transform:Parameters *** in your operational lambda for which you want to create the alarms.
+
 ***To delete the created CloudFormation Stack***, Execute the following command :
 ```
 aws cloudformation delete-stack --stack-name <YourStackName> --region <Region>
