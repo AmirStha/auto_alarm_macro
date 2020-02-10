@@ -80,18 +80,19 @@ def handler(event, context):
 
     logger.info(">>>>>>>>>>> event['params']: {}".format(event['params']))
 
+    selectedFunctions = event['params']['selectedFunctions']
+    selectedFunctions = selectedFunctions.split(',')
+
+
     for resource in resources:
         logger.info('Searching {} for resource type'.format(resource))
         resource_json = resources[resource]
         try:   
             if resource_json['Type'] == 'AWS::Lambda::Function':
-                print(">>>>>>>>>>>>>>>>>> resource_json", resource_json)
-                # if resource_json and resource_json['FunctionName']:
-                #     print(">>>>>>>>>>>>>>>>>> ", resource_json['FunctionName'])
-                print("This is a lambda resource")
-                logger.info('Resource {} is a lambda function'.format(resource))
-                lambda_alarms = aws_alarms(resource,monitoring_topic,resource_json, conf_file['lambda'])
-                alarm_dictionary.update(lambda_alarms)
+                if resource_json and resource_json['Properties'] and resource_json['Properties']['FunctionName']:
+                    if resource_json['Properties']['FunctionName'] in selectedFunctions:
+                        lambda_alarms = aws_alarms(resource,monitoring_topic,resource_json, conf_file['lambda'])
+                        alarm_dictionary.update(lambda_alarms)
             elif resource_json['Type'] == 'AWS::EC2::Instance':
                 logger.info('Resource {} is an EC2'.format(resource))
                 ec2_alarms = aws_alarms(resource,monitoring_topic,resource_json, conf_file['ec2'])
