@@ -78,8 +78,6 @@ def handler(event, context):
     logger.info('Input Template: {}'.format(fragment))
     resources = fragment['Resources']
 
-    logger.info(">>>>>>>>>>> event['params']: {}".format(event['params']))
-
     selectedFunctions = event['params']['selectedFunctions']
     selectedFunctions = selectedFunctions.split(',')
 

@@ -1,0 +1,30 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: 'Template for cloudwatch-alert-macro
+
+  '
+Resources:
+  AlarmMacro:
+    Type: AWS::CloudFormation::Macro
+    Properties:
+      Name: AlarmMacro
+      FunctionName:
+        Fn::GetAtt:
+        - AlarmMacroFunction
+        - Arn
+  AlarmMacroFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: AlarmMacroFunction
+      Description: Lambda Function for Alarm macro that appends alarms to specified
+        resources in cloudformation templates
+      Handler: alarm_macro.handler
+      MemorySize: 128
+      Runtime: python3.6
+      Timeout: 60
+      CodeUri: s3://test-bucket-acg-rajan/8e9af9dc78c5db69c43d136db9a76e40
+      Policies:
+      - AWSLambdaBasicExecutionRole
+      Environment:
+        Variables:
+          SNSTopic: arn:aws:sns:us-east-1:713147272639:monitorBottleLambdaBottleIOT
